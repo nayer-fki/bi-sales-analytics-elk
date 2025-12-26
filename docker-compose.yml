@@ -1,0 +1,72 @@
+services:
+  mongodb:
+    image: mongo:6
+    container_name: bi_mongodb
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_DATABASE: bi_db
+    volumes:
+      - bi_mongo_data:/data/db
+    networks:
+      - bi_net
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+    container_name: bi_elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ports:
+      - "9202:9200"
+    volumes:
+      - bi_es_data:/usr/share/elasticsearch/data
+    networks:
+      - bi_net
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.2
+    container_name: bi_kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5602:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - bi_net
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.12.2
+    container_name: bi_logstash
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+      - ./logstash/config:/usr/share/logstash/config
+    environment:
+      - xpack.monitoring.enabled=false
+    depends_on:
+      - elasticsearch
+      - mongodb
+    networks:
+      - bi_net
+  
+  monstache:
+    image: rwynn/monstache:6.7.10
+    container_name: bi_monstache
+    depends_on:
+      - mongodb
+      - elasticsearch
+    networks:
+      - bi_net
+    command: -f /config/monstache.toml
+    volumes:
+      - ./monstache:/config
+
+
+networks:
+  bi_net:
+
+volumes:
+  bi_mongo_data:
+  bi_es_data:

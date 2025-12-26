@@ -1,0 +1,58 @@
+# ===============================
+# OS / Editor
+# ===============================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ===============================
+# Python
+# ===============================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv
+venv/
+
+# ===============================
+# Logs
+# ===============================
+*.log
+logs/
+logstash/logs/
+
+# ===============================
+# Elasticsearch / Kibana
+# ===============================
+elasticsearch/data/
+kibana/data/
+kibana/plugins/
+kibana/optimize/
+
+# ===============================
+# Docker
+# ===============================
+.env.docker
+docker-compose.override.yml
+
+# ===============================
+# Generated / Temporary data
+# ===============================
+data/generated/
+tmp/
+temp/
+
+# ===============================
+# Node (if ever used)
+# ===============================
+node_modules/
+
+# ===============================
+# Backups / Exports
+# ===============================
+*.bak
+*.backup
+*.old

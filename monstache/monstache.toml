@@ -1,0 +1,10 @@
+mongo-url = "mongodb://mongodb:27017/bi_db"
+elasticsearch-urls = ["http://elasticsearch:9200"]
+
+direct-read-namespaces = [
+  "bi_db.customers",
+  "bi_db.products",
+  "bi_db.sales",
+  "bi_db.events",
+  "bi_db.customer_metrics"
+]
